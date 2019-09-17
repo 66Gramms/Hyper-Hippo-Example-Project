@@ -1,4 +1,3 @@
-
 namespace Clicker.Core
 {
     public static class ClickerMath {

@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using Clicker.Money;
-using Clicker.UI;
 using Clicker.Core;
 
 namespace Clicker.Products
