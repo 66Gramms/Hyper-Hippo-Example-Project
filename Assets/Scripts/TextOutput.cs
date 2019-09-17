@@ -3,27 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-using Clicker.Core;
+using Clicker.Money;
 
 namespace Clicker.UI
 {
     public class TextOutput : MonoBehaviour
     {
         [SerializeField] Text moneyText;
-        MoneyManagger moneyManagger;
-
-        private void Start() {
-            CacheComponents();
-        }
-
-        private void CacheComponents()
-        {
-            moneyManagger = GetComponent<MoneyManagger>();
-        }
 
         public void UpdateMoneyText()
         {
-            moneyText.text = moneyManagger.totalMoney.ToString();
+            moneyText.text = MoneyManagger.totalMoney.ToString();
         }
     }    
 }

@@ -3,22 +3,23 @@ using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
 
-namespace Clicker.Core
+namespace Clicker.Money
 {
-    public class MoneyManagger : MonoBehaviour
+    public static class MoneyManagger
     {
-        public BigInteger totalMoney { get; private set; } = 0;
-        public float moneyMultiplier { get; private set; } = 1f;
+        public static BigInteger totalMoney { get; private set; } = 0;
+        public static float globalMoneyMultiplier { get; private set; } = 1f;
+        public static int totalPassiveIncome = 1;  //Amount of money gained each second
 
-        public void AddToMoney(int amount)
+        public static void GenerateProductIncome(int amount)
         {
-            totalMoney += amount;
+            totalMoney += (BigInteger)((float)amount * globalMoneyMultiplier);
         }
 
         /// <summary>
         /// Returns TRUE and subtracts money if it is possible, returns FALSE if it's not.
         /// </summary>
-        public bool SubtractFromMoney(int amount)
+        public static bool SubtractFromMoney(int amount)
         {
             if (amount > totalMoney)    return false;
             else {
@@ -28,19 +29,19 @@ namespace Clicker.Core
 
         }
 
-        public void AddToMoneyMultiplier(float amount)
+        public static void AddToMoneyMultiplier(float amount)
         {
-            moneyMultiplier += amount;
+            globalMoneyMultiplier += amount;
         }
 
         /// <summary>
         /// Returns TRUE and subtracts multiplier if it is possible, returns FALSE if it's not.
         /// </summary>
-        public bool SubtractFromMoneyMultiplier(float amount)
+        public static bool SubtractFromMoneyMultiplier(float amount)
         {
-            if (amount > moneyMultiplier)   return false;
+            if (amount > globalMoneyMultiplier)   return false;
             else {
-                moneyMultiplier -= amount;
+                globalMoneyMultiplier -= amount;
                 return true;
             }
         }
