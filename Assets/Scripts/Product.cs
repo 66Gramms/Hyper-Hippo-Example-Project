@@ -16,6 +16,8 @@ namespace Clicker.Products
         [Space(10)]
         [SerializeField] private Slider productionSlider;
         [SerializeField] private int productPrice = 2;
+        [Space(10)]
+        [SerializeField] private Text productAmountText;
 
         private Coroutine productionCoroutine;
         private int productAmount = 1;
@@ -58,6 +60,7 @@ namespace Clicker.Products
 
             MoneyManagger.SubtractFromMoney(productPrice * amount);
             productAmount += amount;
+            productAmountText.text = productAmount.ToString();
         }
     }
 }
