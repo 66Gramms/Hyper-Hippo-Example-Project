@@ -1,28 +1,24 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 using Clicker.Money;
 using Clicker.UI;
+using Clicker.Core;
 
 namespace Clicker.Products
 {
     public class Product : MonoBehaviour
     {
-        [SerializeField] private int productIncome = 1;
+        [SerializeField] private int productBaseIncome = 1;
         [SerializeField] private float productMultiplier = 1f;
-        [Space(5)]
         [SerializeField] private float productionTime = 1f;
         [Space(10)]
         [SerializeField] private Slider productionSlider;
+        [SerializeField] private int productPrice = 2;
 
-        private static TextOutput textOutpot;
         private Coroutine productionCoroutine;
-
-        private void Start() {
-            textOutpot = FindObjectOfType<TextOutput>();
-        }
+        private int productAmount = 1;
 
         public void GenerateIncome()
         {
@@ -39,7 +35,8 @@ namespace Clicker.Products
                 if (productionTimeProgress > productionTime)
                     productionTimeProgress = productionTime;
 
-                productionSlider.value = productionTimeProgress / 10f; // DIVISION BY TEN IS TEMPORARY AND IS ONLY FOR TESTING, FIX THIS IMMEDIATLY!!!
+                float normalizedProductionTimeProgress = ClickerMath.Map(productionTimeProgress, 0f, productionTime, 0f, 1f);
+                productionSlider.value = normalizedProductionTimeProgress;
                 yield return new WaitForEndOfFrame();
             }
 
@@ -48,9 +45,19 @@ namespace Clicker.Products
             productionTimeProgress = 0f;
             productionCoroutine = null;
 
-            int moneyToMake = Mathf.RoundToInt((float)productIncome * productMultiplier);
+            int moneyToMake = Mathf.RoundToInt((float)(productBaseIncome) * (float)(productAmount) * productMultiplier);
+            Debug.Log(moneyToMake);
             MoneyManagger.GenerateProductIncome(moneyToMake);
-            textOutpot.UpdateMoneyText();
+        }
+
+        public void IncreaseAmountOfProduct(int amount)
+        {
+            int cost = productPrice * amount;
+            bool enoughMoney = MoneyManagger.totalMoney >= cost;
+            if (!enoughMoney)    return;
+
+            MoneyManagger.SubtractFromMoney(productPrice * amount);
+            productAmount += amount;
         }
     }
 }
