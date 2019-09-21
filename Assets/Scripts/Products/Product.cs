@@ -17,9 +17,11 @@ namespace Clicker.Products
         [SerializeField] private int productPrice = 2;
         [Space(10)]
         [SerializeField] private Text productAmountText;
+        [SerializeField] private Text productPurchaseAmountText;
 
         private Coroutine productionCoroutine;
         private int productAmount = 1;
+        private int productPurchaseAmount = 1;
 
         public void GenerateIncome()
         {
@@ -47,19 +49,29 @@ namespace Clicker.Products
             productionCoroutine = null;
 
             int moneyToMake = Mathf.RoundToInt((float)(productBaseIncome) * (float)(productAmount) * productMultiplier);
-            Debug.Log(moneyToMake);
             MoneyManagger.GenerateProductIncome(moneyToMake);
         }
 
-        public void IncreaseAmountOfProduct(int amount)
+        public void IncreaseAmountOfProduct()
         {
-            int cost = productPrice * amount;
+            int cost = productPrice * productPurchaseAmount;
             bool enoughMoney = MoneyManagger.totalMoney >= cost;
             if (!enoughMoney)    return;
 
-            MoneyManagger.SubtractFromMoney(productPrice * amount);
-            productAmount += amount;
+            MoneyManagger.SubtractFromMoney(productPrice * productPurchaseAmount);
+            productAmount += productPurchaseAmount;
             productAmountText.text = productAmount.ToString();
+        }
+
+        public static void UpdatePurchaseAmountText(int amount)
+        {
+            Product[] allProducts = FindObjectsOfType<Product>();
+            foreach (Product product in allProducts)
+            {
+                string text = "Buy " + amount.ToString() + " " + product.transform.parent.name + " for " + product.productPrice * amount + "$";
+                product.productPurchaseAmountText.text = text;
+                product.productPurchaseAmount = amount;
+            }
         }
     }
 }
