@@ -18,6 +18,7 @@ namespace Clicker.Products
         [Space(10)]
         [SerializeField] private Text productAmountText;
         [SerializeField] private Text productPurchaseAmountText;
+        [SerializeField] private Text timeLeftText;
 
         private Coroutine productionCoroutine;
         private int productAmount = 1;
@@ -40,6 +41,12 @@ namespace Clicker.Products
 
                 float normalizedProductionTimeProgress = ClickerMath.Map(productionTimeProgress, 0f, productionTime, 0f, 1f);
                 productionSlider.value = normalizedProductionTimeProgress;
+
+				float timeLeft = productionTime - productionTimeProgress;
+				timeLeftText.text = timeLeft.ToString("F2") + " seconds";
+                if (timeLeft <= Mathf.Epsilon)
+                timeLeftText.text = "";
+
                 yield return new WaitForEndOfFrame();
             }
 
