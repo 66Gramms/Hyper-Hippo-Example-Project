@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,17 +22,25 @@ namespace Clicker.Products
         [SerializeField] private Text productPurchaseAmountText;
         [SerializeField] private Text timeLeftText;
 
-        private Coroutine productionCoroutine;
-        private int productAmount = 1;
-        private int productPurchaseAmount = 1;
+        private static List<Product> allProducts = new List<Product>();
+        private static int purchaseAmount = 1;
 
+        private Coroutine productionCoroutine;
+        private BigInteger productAmount = 1;
+        private float productionTimeProgress = 0f;
+
+        private void Start()
+        {
+            allProducts.Add(this);
+        }
+
+        //Called from UI button
         public void GenerateIncome()
         {
             if (productionCoroutine == null)
                 productionCoroutine = StartCoroutine(StartProducing());
         }
 
-        float productionTimeProgress = 0f;
         private IEnumerator StartProducing()
         {
             while (productionTimeProgress < productionTime)
@@ -61,24 +71,54 @@ namespace Clicker.Products
 
         public void IncreaseAmountOfProduct()
         {
-            int cost = productPrice * productPurchaseAmount;
+            int cost = productPrice * purchaseAmount;
             bool enoughMoney = MoneyManagger.totalMoney >= cost;
-            if (!enoughMoney)    return;
+			var purchasableAmount = MoneyManagger.totalMoney / (BigInteger)productPrice;
 
-            MoneyManagger.SubtractFromMoney(productPrice * productPurchaseAmount);
-            productAmount += productPurchaseAmount;
+            if (!enoughMoney)
+            {
+                MoneyManagger.SubtractFromMoney(purchasableAmount);
+                productAmount += purchasableAmount;
+            } else {
+                MoneyManagger.SubtractFromMoney(productPrice * purchaseAmount);
+                productAmount += purchaseAmount;
+			}
+
             productAmountText.text = productAmount.ToString();
         }
 
         public static void UpdatePurchaseAmountText(int amount)
-        {
-            Product[] allProducts = FindObjectsOfType<Product>();
-            foreach (Product product in allProducts)
-            {
-                string text = "Buy " + amount.ToString() + " " + product.transform.parent.name + " for " + product.productPrice * amount + "$";
-                product.productPurchaseAmountText.text = text;
-                product.productPurchaseAmount = amount;
-            }
-        }
+		{
+			Product.purchaseAmount = amount;
+			foreach (Product product in allProducts)
+			{
+				var purchasableAmount = MoneyManagger.totalMoney / (BigInteger)product.productPrice;
+				string text;
+
+				if (purchasableAmount < amount)
+					text = $"Buy {purchasableAmount.ToString()} {product.transform.parent.name} for {product.productPrice * purchasableAmount}$";
+				else
+					text = $"Buy {amount.ToString()} {product.transform.parent.name} for {product.productPrice * amount}$";
+
+				product.productPurchaseAmountText.text = text;
+				purchaseAmount = amount;
+			}
+		}
+
+		public static void UpdatePurchaseAmountText()
+		{
+			foreach (Product product in allProducts)
+			{
+				var purchasableAmount = MoneyManagger.totalMoney / (BigInteger)product.productPrice;
+				string text;
+
+				if (purchasableAmount < purchaseAmount)
+					text = $"Buy {purchasableAmount.ToString()} {product.transform.parent.name} for {product.productPrice * purchasableAmount}$";
+				else
+					text = $"Buy {purchaseAmount.ToString()} {product.transform.parent.name} for {product.productPrice * purchaseAmount}$";
+
+				product.productPurchaseAmountText.text = text;
+			}
+		}
     }
 }

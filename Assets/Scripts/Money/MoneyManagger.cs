@@ -24,7 +24,18 @@ namespace Clicker.Money
                 totalMoney -= amount;
                 return true;
             }
+        }
 
+        /// <summary>
+        /// Returns TRUE and subtracts money if it is possible, returns FALSE if it's not.
+        /// </summary>
+        public static bool SubtractFromMoney(BigInteger amount)
+        {
+            if (amount > totalMoney)    return false;
+            else {
+                totalMoney -= amount;
+                return true;
+            }
         }
 
         public static void AddToMoneyMultiplier(float amount)

@@ -14,6 +14,10 @@ namespace Clicker.UI
 
         private int index = 0;
 
+        private void Update() {
+            Product.UpdatePurchaseAmountText();
+        }
+
         //Called from UI button
         public void UpdatePurchaseText()
         {
