@@ -1,8 +1,6 @@
 ﻿using System.Numerics;
 using UnityEngine;
 
-using Clicker.UI;
-
 namespace Clicker.Money
 {
     public class MoneyManagger : MonoBehaviour
@@ -10,18 +8,10 @@ namespace Clicker.Money
         public static BigInteger totalMoney { get; private set; } = 0;
         public static float globalMoneyMultiplier { get; private set; } = 1f;
         public static int totalPassiveIncome = 1;  //Amount of money gained each second
-
-        private static TextOutput textOutput;
-
-        static MoneyManagger()
-        {
-            textOutput = FindObjectOfType<TextOutput>();
-        }
         
         public static void GenerateProductIncome(int amount)
         {
             totalMoney += (BigInteger)((float)amount * globalMoneyMultiplier);
-            textOutput.UpdateMoneyText();
         }
 
         /// <summary>
@@ -32,7 +22,6 @@ namespace Clicker.Money
             if (amount > totalMoney)    return false;
             else {
                 totalMoney -= amount;
-                textOutput.UpdateMoneyText();
                 return true;
             }
 

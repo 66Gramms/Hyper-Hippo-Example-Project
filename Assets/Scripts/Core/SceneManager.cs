@@ -2,7 +2,7 @@
 
 namespace Clicker.Core
 {
-public class SceneManager : MonoBehaviour
+    public class SceneManager : MonoBehaviour
     {
         public void Exit()
         {

@@ -9,6 +9,10 @@ namespace Clicker.UI
     {
         [SerializeField] Text moneyText;
 
+        private void Update() {
+            UpdateMoneyText();
+        }
+
         public void UpdateMoneyText()
         {
             moneyText.text = MoneyManagger.totalMoney.ToString();
