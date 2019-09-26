@@ -1038,7 +1038,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PurchaseAmountText: {fileID: 1994061253}
-  purchaseAmounts: 010000000a0000003200000064000000
+  purchaseAmounts: 01000a0032006400e803
 --- !u!114 &598814908
 MonoBehaviour:
   m_ObjectHideFlags: 0

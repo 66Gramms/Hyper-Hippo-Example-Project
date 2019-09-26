@@ -10,7 +10,7 @@ namespace Clicker.UI
         public static int currentAmount = 1;
 
         [SerializeField] Text PurchaseAmountText;
-        [SerializeField] int[] purchaseAmounts = new int[4] {1, 10, 50, 100};
+        [SerializeField] short[] purchaseAmounts = new short[5] {1, 10, 50, 100, 1000};
 
         private int index = 0;
 
