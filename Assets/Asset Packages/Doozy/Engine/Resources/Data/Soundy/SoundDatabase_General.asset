@@ -40,7 +40,8 @@ MonoBehaviour:
   m_Name: SoundDatabase_General
   m_EditorClassIdentifier: 
   DatabaseName: General
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: bc155dfdccec1be4780029a8bd542de5,
+    type: 2}
   SoundNames:
   - No Sound
   - No Sound

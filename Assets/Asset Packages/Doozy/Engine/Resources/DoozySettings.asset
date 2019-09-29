@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DoozySettings
   m_EditorClassIdentifier: 
   SelectedLanguage: 1
-  AutoDisableUIInteractions: 1
+  AutoDisableUIInteractions: 0
   DebugBackButton: 0
   DebugGameEventListener: 0
   DebugGameEventManager: 0
@@ -50,7 +50,7 @@ MonoBehaviour:
   SpeedBasedAnimations: 0
   UseBackButton: 0
   UseMasterAudio: 0
-  UseOrientationDetector: 0
+  UseOrientationDetector: 1
   UsePlaymaker: 0
   UseTextMeshPro: 0
   AssetDatabaseSaveAssetsNeeded: 0
