@@ -16,14 +16,14 @@ namespace Clicker.Products
         [SerializeField] private float productionTime = 1f;
         [Space(10)]
         [SerializeField] private Slider productionSlider;
-        [SerializeField] private int productPrice = 2;
+        [SerializeField] private BigInteger productPrice = 2;
         [Space(10)]
         [SerializeField] private Text productAmountText;
         [SerializeField] private Text productPurchaseAmountText;
         [SerializeField] private Text timeLeftText;
 
         private static List<Product> allProducts = new List<Product>();
-        private static int purchaseAmount = 1;
+        private static BigInteger purchaseAmount = 1;
 
         private Coroutine productionCoroutine;
         private BigInteger productAmount = 1;
@@ -38,10 +38,10 @@ namespace Clicker.Products
         public void GenerateIncome()
         {
             if (productionCoroutine == null)
-                productionCoroutine = StartCoroutine(StartProducing());
+                productionCoroutine = StartCoroutine(produce());
         }
 
-        private IEnumerator StartProducing()
+        private IEnumerator produce()
         {
             while (productionTimeProgress < productionTime)
             {
@@ -71,9 +71,9 @@ namespace Clicker.Products
 
         public void IncreaseAmountOfProduct()
         {
-            int cost = productPrice * purchaseAmount;
+            BigInteger cost = productPrice * purchaseAmount;
             bool enoughMoney = MoneyManagger.totalMoney >= cost;
-			var purchasableAmount = MoneyManagger.totalMoney / (BigInteger)productPrice;
+			BigInteger purchasableAmount = MoneyManagger.totalMoney / productPrice;
 
             if (!enoughMoney)
             {
@@ -92,7 +92,7 @@ namespace Clicker.Products
 			Product.purchaseAmount = amount;
 			foreach (Product product in allProducts)
 			{
-				var purchasableAmount = MoneyManagger.totalMoney / (BigInteger)product.productPrice;
+				BigInteger purchasableAmount = MoneyManagger.totalMoney / (BigInteger)product.productPrice;
 				string text;
 
 				if (purchasableAmount < amount)
@@ -109,7 +109,7 @@ namespace Clicker.Products
 		{
 			foreach (Product product in allProducts)
 			{
-				var purchasableAmount = MoneyManagger.totalMoney / (BigInteger)product.productPrice;
+				BigInteger purchasableAmount = MoneyManagger.totalMoney / (BigInteger)product.productPrice;
 				string text;
 
 				if (purchasableAmount < purchaseAmount)

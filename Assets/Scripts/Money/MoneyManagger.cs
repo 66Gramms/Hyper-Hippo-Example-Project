@@ -31,11 +31,12 @@ namespace Clicker.Money
         /// </summary>
         public static bool SubtractFromMoney(BigInteger amount)
         {
-            if (amount > totalMoney)    return false;
-            else {
-                totalMoney -= amount;
-                return true;
+            if (amount > totalMoney)
+            {
+                return false;
             }
+            totalMoney -= amount;
+            return true;
         }
 
         public static void AddToMoneyMultiplier(float amount)
